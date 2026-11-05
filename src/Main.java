@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,11 +11,7 @@ public class Main {
             System.out.print("Enter password : ");
             password = input.nextLine();
 
-            if (validate(password)) {
-                System.out.println("Password valid!");
-            }else {
-                System.out.println("Password invalid!");
-            }
+            validate(password);
 
             do {
                 System.out.print("Do you want to continue (y/n) : ");
@@ -31,40 +29,15 @@ public class Main {
     }
 
     //validate method
-    static boolean validate(String password) {
-        boolean hasNumber = false, hasUpperCase = false, hasLowerCase = false, hasSpecialChar = false;
+    static void validate(String password) {
 
-        if (password == null || password.length() < 8) {
-            System.out.println("Password must be at least 8 characters");
-            return false;
+        if(password.length() < 8) System.out.println("Password must be at least 8 characters!");
+        else {
+            if (!password.matches(".*[A-Z].*")) System.out.println("Password must contain uppercase!");
+            if (!password.matches(".*[a-z].*")) System.out.println("Password must contain lowercase!");
+            if (!password.matches(".*\\d.*")) System.out.println("Password must contain number!");
+            if (!password.matches(".*[!@#$%&*?].*")) System.out.println("Password must contain special character!");
+            if (password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[\\d])(?=.*[!@#$%&*?]).{8,}$")) System.out.println("Password valid");
         }
-        for (char character : password.toCharArray()) {
-            if (Character.isDigit(character)) {
-                hasNumber = true;
-            }
-            if (Character.isUpperCase(character)) {
-                hasUpperCase = true;
-            }
-            if (Character.isLowerCase(character)) {
-                hasLowerCase = true;
-            }
-            if (!Character.isLetterOrDigit(character) && !Character.isWhitespace(character)) {
-                hasSpecialChar = true;
-            }
-        }
-        if(!hasNumber){
-            System.out.println("Password must contain number");
-        }
-        if(!hasUpperCase){
-            System.out.println("Password must contain uppercase");
-        }
-        if(!hasLowerCase){
-            System.out.println("Password must contain lowercase");
-        }
-        if(!hasSpecialChar){
-            System.out.println("Password must contain special character");
-        }
-
-        return hasNumber && hasUpperCase && hasLowerCase && hasSpecialChar;
     }
 }
